@@ -8,6 +8,10 @@ async function getMembers(req, res) {
   const Newmembers = await members.find();
   return res.status(200).json(Newmembers);
 }
+async function getMemberschek(req, res) {
+ 
+  return res.status(200).json("Api ok");
+}
 /* ------------------------------------------- */
 
 async function postMembers(req, res) {
@@ -112,4 +116,4 @@ async function putfinance(req, res) {
   }
 }
 
-export { getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
+export { getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
