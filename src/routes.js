@@ -4,7 +4,7 @@ import cors from 'cors'
 const routes = Router();
 
 routes.get('/membros', getMemberschek);
-routes.get('/membros', getMembers);
+routes.get('/membros/:all', getMembers);
 routes.post('/membros', cors(), postMembers);
 routes.delete('/membros/:id', deleteMembers);
 routes.put('/membros/:id', putMembers);
