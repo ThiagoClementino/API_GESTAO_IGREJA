@@ -1,5 +1,5 @@
 import express from "express";
-import connectDatabase from "./Database/Database.js";
+import connectDatabase from "./database/database.js";
 import routes from './routes.js'
 import cors from "cors"
 const PORT = 3080;
