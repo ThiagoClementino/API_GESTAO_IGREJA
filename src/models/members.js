@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 
 const membersSchema = new mongoose.Schema({
-
+  matricula:{
+    type: 'string',
+    required: true,
+    unique: true,
+    trim: true,
+  },
   datacriacao: {
     type: Date,
     default: Date.now(),
