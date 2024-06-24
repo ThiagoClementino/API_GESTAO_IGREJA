@@ -4,6 +4,11 @@ import financeiro from "../models/financeiro.js";
 
 /* ------------------------------------------- */
 
+
+
+
+/* ------------------------------------------- */
+
 async function getMembers(req, res) {
   const Newmembers = await members.find();
   return res.status(200).json(Newmembers);
@@ -17,7 +22,8 @@ async function getMemberschek(req, res) {
 async function postMembers(req, res) {
   console.log(req.body)
   try {
-    const NovoMembro = new members(req.body);
+    
+    const NovoMembro = new members( req.body);
     await NovoMembro.save();
     res.status(201).json(NovoMembro);
   } catch (erro) {

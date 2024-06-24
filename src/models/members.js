@@ -1,15 +1,19 @@
 import mongoose from "mongoose";
 
+
+
+
+
 const membersSchema = new mongoose.Schema({
   matricula:{
-    type: 'string',
-    required: true,
+    type: String,
+    required: false,
     unique: true,
     trim: true,
   },
   datacriacao: {
-    type: Date,
-    default: Date.now(),
+    type: String,
+    required: false,
   },
 
   name: {
