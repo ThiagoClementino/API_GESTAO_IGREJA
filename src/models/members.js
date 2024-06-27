@@ -109,6 +109,14 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+    dateBatism: {
+      type: Date,
+      required: false,
+    },
+    filhos:{
+    type: Number,
+    required: false,
+    },
   qtdfilhos: {
     type: Number,
     required: false,
@@ -150,6 +158,10 @@ const membersSchema = new mongoose.Schema({
     required: false,
   },
   jobChurch: {
+    type: String,
+    required: false,
+  },
+  congregacao:{
     type: String,
     required: false,
   },
@@ -213,6 +225,13 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  exortacao:{
+    type: String,
+    required: false,
+  },
+  habito:{
+    type: String, 
+    required: false},
   discipulo: {
     type: String,
     required: false,
@@ -246,6 +265,10 @@ const membersSchema = new mongoose.Schema({
     required: false,
   },
   desenvolvimentodafe: {
+    type: String,
+    required: false,
+  },
+  conviccaodiscipulo:{
     type: String,
     required: false,
   },
