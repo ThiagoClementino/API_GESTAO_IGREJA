@@ -181,6 +181,10 @@ const membersSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
+  jobChurchTemp:{
+    type: String,
+    required: false,
+  },
   databatismo: {
     type: Date,
     required: false,
@@ -231,7 +235,8 @@ const membersSchema = new mongoose.Schema({
   },
   habito:{
     type: String, 
-    required: false},
+    required: false
+  },
   discipulo: {
     type: String,
     required: false,
