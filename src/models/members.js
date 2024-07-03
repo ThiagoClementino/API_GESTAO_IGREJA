@@ -1,11 +1,25 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
+const Schema = mongoose.Schema;
 
+// Função para gerar um ID único de 4 dígitos
+const generateUniqueId = async () => {
+  let id;
+  let member;
+  do {
+    id = Math.floor(1000 + Math.random() * 9000).toString(); // Gera um número de 4 dígitos
+    member = await members.findById(id);
+  } while (member);
+  return id;
+};
 
-
-
-const membersSchema = new mongoose.Schema({
-  matricula:{
+// Criar o esquema do membro
+const membersSchema = new Schema({
+  _id: {
+    type: String,
+    default: async () => await generateUniqueId()
+  },
+  matricula: {
     type: String,
     required: false,
     unique: true,
@@ -15,7 +29,6 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-
   name: {
     type: String,
     required: false,
@@ -43,7 +56,6 @@ const membersSchema = new mongoose.Schema({
   teltwo: {
     type: String,
     required: false,
-    unique: true,
   },
   email: {
     type: String,
@@ -109,14 +121,14 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-    dateBatism: {
-      type: Date,
-      required: false,
-    },
-    filhos:{
+  dateBatism: {
+    type: Date,
+    required: false,
+  },
+  filhos: {
     type: Number,
     required: false,
-    },
+  },
   qtdfilhos: {
     type: Number,
     required: false,
@@ -161,7 +173,7 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  congregacao:{
+  congregacao: {
     type: String,
     required: false,
   },
@@ -181,7 +193,7 @@ const membersSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  jobChurchTemp:{
+  jobChurchTemp: {
     type: String,
     required: false,
   },
@@ -229,12 +241,12 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  exortacao:{
+  exortacao: {
     type: String,
     required: false,
   },
-  habito:{
-    type: String, 
+  habito: {
+    type: String,
     required: false
   },
   discipulo: {
@@ -273,7 +285,7 @@ const membersSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  conviccaodiscipulo:{
+  conviccaodiscipulo: {
     type: String,
     required: false,
   },
@@ -307,4 +319,6 @@ const membersSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("members", membersSchema);
+const members = mongoose.model('members', membersSchema);
+
+export { members, generateUniqueId };

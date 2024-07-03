@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance  } from "./controllers/UserController.js";
+import { getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
 import cors from 'cors'
 const routes = Router();
 
