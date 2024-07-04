@@ -126,7 +126,7 @@ const membersSchema = new Schema({
     required: false,
   },
   filhos: {
-    type: Number,
+    type: String,
     required: false,
   },
   qtdfilhos: {
