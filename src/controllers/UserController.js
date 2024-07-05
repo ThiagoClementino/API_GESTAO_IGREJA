@@ -7,7 +7,7 @@ async function getMembers(req, res) {
 }
 async function getMember(req, res) {
   try {
-      const member = members.find(member => member.id == req.params.id);
+      const member = await members.findOne({ _id: req.params.id });
       if (member) {
           res.status(200).json(member);
       } else {
