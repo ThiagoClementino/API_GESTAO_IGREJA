@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
+import { getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
 import cors from 'cors'
 const routes = Router();
 
 routes.get('/membros/ok', getMemberschek);
+routes.get('/membros/:id', getMember);
 routes.get('/membros', getMembers);
 routes.post('/membros', cors(), postMembers);
 routes.delete('/membros/:id', deleteMembers);

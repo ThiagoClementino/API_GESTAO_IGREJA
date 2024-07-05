@@ -5,6 +5,18 @@ async function getMembers(req, res) {
   const Newmembers = await members.find();
   return res.status(200).json(Newmembers);
 }
+async function getMember(req, res) {
+  try {
+      const member = members.find(member => member.id == req.params.id);
+      if (member) {
+          res.status(200).json(member);
+      } else {
+          res.status(404).json({ message: 'Membro não encontrado' });
+      }
+  } catch (error) {
+      res.status(500).json({ message: 'Erro ao buscar membro', error });
+  }
+}
 
 async function getMemberschek(req, res) {
   return res.status(200).json("Api ok");
@@ -84,4 +96,4 @@ async function putfinance(req, res) {
   }
 }
 
-export { getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
+export { getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };

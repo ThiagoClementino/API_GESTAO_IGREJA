@@ -15,7 +15,7 @@ const generateUniqueId = async () => {
 
 // Criar o esquema do membro
 const membersSchema = new Schema({
-  _id: {
+ _id: {
     type: String,
     default: async () => await generateUniqueId()
   },
