@@ -194,7 +194,7 @@ const membersSchema = new Schema({
     required: false,
   },
   jobChurchTemp: {
-    type: String,
+    type: Date,
     required: false,
   },
   databatismo: {
