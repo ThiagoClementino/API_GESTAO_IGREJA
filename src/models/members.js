@@ -246,11 +246,11 @@ const membersSchema = new Schema({
     required: false,
   },
   habito: {
-    name: {type: String, 
-    required: false, 
+    type: String, 
+    required: false,
   },
     
-  },
+
   discipulo: {
     type: String,
     required: false,
