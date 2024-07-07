@@ -248,6 +248,7 @@ const membersSchema = new Schema({
   habito: {
     type: String, 
     required: false,
+    enum: ['Sim', 'Não']
   },
     
 
