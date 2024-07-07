@@ -246,8 +246,10 @@ const membersSchema = new Schema({
     required: false,
   },
   habito: {
-    name: {type: String, required: true, trim: true},
-    active: {type: Boolean, default: true }
+    name: {type: String, 
+    required: false, 
+  },
+    
   },
   discipulo: {
     type: String,
