@@ -320,6 +320,11 @@ const membersSchema = new Schema({
     type: String,
     required: false,
   },
+  cadAtivo:{
+    type:Boolean,
+    required: false,
+    default: true, 
+  }
 });
 
 const members = mongoose.model('members', membersSchema);
