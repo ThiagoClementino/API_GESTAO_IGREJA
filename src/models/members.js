@@ -52,7 +52,7 @@ const membersSchema = new Schema({
     required: false,
   },
   dateBirth: {
-    type: Date,
+    type: String,
     required: false,
   },
   sex: {
