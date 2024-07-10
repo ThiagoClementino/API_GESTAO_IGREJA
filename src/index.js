@@ -2,7 +2,7 @@ import express from "express";
 import connectDatabase from "./database/database.js";
 import routes from './routes.js'
 import cors from "cors"
-const PORT = 3080;
+const PORT = 3060;
 
 const app = express();
 app.use(cors())

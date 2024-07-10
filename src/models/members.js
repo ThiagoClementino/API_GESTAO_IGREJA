@@ -13,7 +13,16 @@ const generateUniqueId = async () => {
   return id;
 };
 
-// Criar o esquema do membro
+
+
+const dataMatricula = () => {
+  const data = new Date();
+  const dia = data.getDate();
+  const mes = data.getMonth() + 1;
+  const ano = data.getFullYear();
+  return `${dia.toString().padStart(2, '0')}-${mes.toString().padStart(2, '0')}-${ano}`;
+  
+};
 const membersSchema = new Schema({
  _id: {
     type: String,
@@ -21,6 +30,7 @@ const membersSchema = new Schema({
   },
   matricula: {
     type: String,
+    default: async () => await dataMatricula(),
     required: false,
     unique: true,
     trim: true,
