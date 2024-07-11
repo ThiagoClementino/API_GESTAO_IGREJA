@@ -13,6 +13,14 @@ const generateUniqueId = async () => {
   return id;
 };
 
+const getCurrentDateFormatted = () => {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Janeiro é 0!
+  const year = now.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const membersSchema = new Schema({
  _id: {
     type: String,
@@ -22,6 +30,7 @@ const membersSchema = new Schema({
   datacriacao: {
     type: String,
     required: false,
+    default: getCurrentDateFormatted
   },
   name: {
     type: String,
