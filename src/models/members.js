@@ -15,14 +15,7 @@ const generateUniqueId = async () => {
 
 
 
-  const dataMatricula = () => {
-    const data = new Date();
-    const dia = data.getDate();
-    const mes = data.getMonth() + 1;
-    const ano = data.getFullYear();
-    return `${dia.toString().padStart(2, '0')}-${mes.toString().padStart(2, '0')}-${ano}`;
-    
-  };
+ 
 const membersSchema = new Schema({
  _id: {
     type: String,
@@ -35,9 +28,9 @@ const membersSchema = new Schema({
   //   trim: true,
   // },
   datacriacao: {
-    type: String,
+    type: Date,
     required: false,
-    default: async () => await dataMatricula()
+    
   },
   name: {
     type: String,
