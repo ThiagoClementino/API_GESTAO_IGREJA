@@ -1,6 +1,20 @@
 import mongoose from 'mongoose';
 
+const dataRegistro = () => {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Janeiro é 0!
+    const year = now.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 const financeiroSchema = new mongoose.Schema({
+      
+daregistro:{
+    type: String,
+    required: false,
+    default: dataRegistro,
+
+},
 tipodedado:{
     type: String,
     required: true
