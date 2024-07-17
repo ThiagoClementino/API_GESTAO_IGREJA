@@ -53,4 +53,6 @@ const financeiroSchema = new Schema({
   },
 });
 
-export default mongoose.model('Financeiro', financeiroSchema);
+const Financeiro = mongoose.model('Financeiro', financeiroSchema);
+
+export default Financeiro;

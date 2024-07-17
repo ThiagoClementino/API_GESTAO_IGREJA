@@ -81,7 +81,6 @@ const postfinance = async (req, res) => {
   }
 };
 
-
 async function deletefinance(req, res) {
   try {
     const { id } = req.params;
