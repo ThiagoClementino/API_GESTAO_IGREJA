@@ -9,7 +9,7 @@ const dataRegistro = () => {
   };
 const financeiroSchema = new mongoose.Schema({
       
-daregistro:{
+dataderegistro:{
     type: String,
     required: false,
     default: dataRegistro,
@@ -36,8 +36,8 @@ tipolancamento: {
     required: true
 },
 comprovante: {
-    type: String,
-    required: false
+    type: mongoose.Schema.Types.Mixed, // Handle various file types
+    required: false,
 },
 observacao: {
     type:String,

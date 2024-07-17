@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
+import {uploadData ,getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
 import cors from 'cors'
 const routes = Router();
 
@@ -13,7 +13,7 @@ routes.put('/membros/:id', putMembers);
 
 
 routes.get('/finance', getfinance);
-routes.post('/finance', cors(), postfinance);
+routes.post('/finance',uploadData.single("comprovante"),  cors(), postfinance);
 routes.delete('/finance/:id', deletefinance);
 routes.put('/finance/:id', putfinance);
 

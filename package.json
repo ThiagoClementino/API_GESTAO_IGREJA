@@ -2,15 +2,14 @@
   "name": "apirest-ggerenciador",
   "version": "1.0.0",
   "main": "src/index.js",
-  "type":"module",
-  "engines":{
+  "type": "module",
+  "engines": {
     "engines": " 14.x"
-    }, 
-
+  },
   "scripts": {
-    "start":"node src/index.js",
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon src/index.js"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +19,8 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "mongodb": "^6.7.0",
-    "mongoose": "^8.4.1"
+    "mongoose": "^8.4.1",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.3"

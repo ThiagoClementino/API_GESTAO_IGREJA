@@ -1,5 +1,6 @@
 import { members, generateUniqueId } from '../models/members.js';
 import financeiro from '../models/financeiro.js';
+import multer from 'multer';
 
 async function getMembers(req, res) {
   const Newmembers = await members.find();
@@ -57,6 +58,11 @@ async function putMembers(req, res) {
   }
 }
 
+
+
+const uploadData = multer({dest:"download/"});
+
+
 async function getfinance(req, res) {
   const NewLancamento = await financeiro.find();
   return res.status(200).json(NewLancamento);
@@ -96,4 +102,4 @@ async function putfinance(req, res) {
   }
 }
 
-export { getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
+export { uploadData, getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
