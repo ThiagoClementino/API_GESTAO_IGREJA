@@ -70,31 +70,16 @@ async function getfinance(req, res) {
   return res.status(200).json(NewLancamento);
 }
 
-async function postfinance(req, res) {
+const postfinance = async (req, res) => {
   try {
-    const { body, file } = req;
-
-    
-    if (file) {
-      body.comprovante = {
-        filename: file.originalname,
-        path: file.path,
-        mimetype: file.mimetype,
-        size: file.size
-      };
-    } else {
-      body.comprovante = {}; 
-    }
-
-    const Novolancamento = new Financeiro(body);
+    const Novolancamento = new Financeiro(req.body);
     await Novolancamento.save();
-
     res.status(201).json(Novolancamento);
-  } catch (erro) {
-    res.status(500).json({ erro: "Dados não lançados", mongo: erro.message });
-    console.error(erro);
+  } catch (error) {
+    res.status(500).json({ erro: "Dados não lançados", mongo: error.message });
+    console.error(error);
   }
-}
+};
 
 
 async function deletefinance(req, res) {
