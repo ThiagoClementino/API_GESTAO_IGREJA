@@ -5,6 +5,8 @@ import cors from 'cors'
 const routes = Router();
 import multer from 'multer';
 const upload = multer({ dest: 'uploads/' });
+import upload from "./dataBaseArquive/UploadFinance.js";
+
 routes.get('/membros/ok', getMemberschek);
 routes.get('/membros/:id', getMember);
 routes.get('/membros', getMembers);

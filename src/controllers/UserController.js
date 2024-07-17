@@ -62,7 +62,7 @@ async function getfinance(req, res) {
   return res.status(200).json(NewLancamento);
 }
 
-onst postfinance = async (req, res) => {
+const postfinance = async (req, res) => {
   try {
     const { dataderegistro, tipodedado, valor, statuspagamento, datapagamento, tipolancamento, observacao } = req.body;
     const file = req.file;
