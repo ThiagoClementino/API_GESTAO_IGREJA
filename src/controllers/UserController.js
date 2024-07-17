@@ -74,12 +74,19 @@ async function postfinance(req, res) {
   try {
     const { body, file } = req;
 
-    // Se houver um arquivo de comprovante, adiciona a path do arquivo aos dados do financeiro
+    
     if (file) {
-      body.comprovante = file.path;
+      body.comprovante = {
+        filename: file.originalname,
+        path: file.path,
+        mimetype: file.mimetype,
+        size: file.size
+      };
+    } else {
+      body.comprovante = {}; 
     }
 
-    const Novolancamento = new financeiro(body);
+    const Novolancamento = new Financeiro(body);
     await Novolancamento.save();
 
     res.status(201).json(Novolancamento);

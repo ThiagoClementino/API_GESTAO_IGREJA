@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+const { Schema } = mongoose;
+
 const dataRegistro = () => {
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
@@ -8,52 +10,47 @@ const dataRegistro = () => {
   return `${day}/${month}/${year}`;
 };
 
-const comprovanteSchema = new mongoose.Schema({
+const comprovanteSchema = new Schema({
   filename: { type: String, required: true },
   path: { type: String, required: true },
   mimetype: { type: String, required: true },
-  size: { type: Number, required: true }
+  size: { type: Number, required: true },
 });
 
-const financeiroSchema = new mongoose.Schema({
+const financeiroSchema = new Schema({
   dataderegistro: {
     type: String,
     required: false,
-    default: dataRegistro
+    default: dataRegistro,
   },
   tipodedado: {
     type: String,
     required: true,
-    enum: ['Receita', 'Despesa'] 
   },
   valor: {
     type: Number,
-    required: true
+    required: true,
   },
   statuspagamento: {
     type: String,
     required: true,
-    enum: ['Pago', 'Não pago'] 
   },
   datapagamento: {
     type: String,
-    required: true
+    required: true,
   },
   tipolancamento: {
     type: String,
     required: true,
-    enum: ['Água', 'Luz', 'Aluguel', 'Despesa de departamento', 'Internet'] 
   },
-  comprovante: comprovanteSchema,
-  descricao:{
-    type: String,
-    required: true
-
+  comprovante: {
+    type: comprovanteSchema,
+    required: true,
   },
   observacao: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 export default mongoose.model('Financeiro', financeiroSchema);
