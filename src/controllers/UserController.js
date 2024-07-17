@@ -1,6 +1,6 @@
 import { members, generateUniqueId } from '../models/members.js';
 import financeiro from '../models/financeiro.js';
-const path = require('path');
+
 async function getMembers(req, res) {
   const Newmembers = await members.find();
   return res.status(200).json(Newmembers);
@@ -62,43 +62,17 @@ async function getfinance(req, res) {
   return res.status(200).json(NewLancamento);
 }
 
-const postfinance = async (req, res) => {
+async function postfinance(req, res) {
+  console.log(req.body)
   try {
-    const { dataderegistro, tipodedado, valor, statuspagamento, datapagamento, tipolancamento, observacao } = req.body;
-    const file = req.file;
-
-    // Verifica se o arquivo foi enviado
-    if (!file) {
-      return res.status(400).json({ erro: "Arquivo comprovante é obrigatório" });
-    }
-
-    // Cria o documento Financeiro
-    const novoLancamento = new Financeiro({
-      dataderegistro,
-      tipodedado,
-      valor,
-      statuspagamento,
-      datapagamento,
-      tipolancamento,
-      observacao,
-      comprovante: {
-        filename: file.filename,
-        path: file.path,
-        mimetype: file.mimetype,
-        size: file.size,
-      },
-    });
-
-    // Salva o documento no banco de dados
-    await novoLancamento.save();
-
-    // Retorna o documento salvo como resposta
-    res.status(201).json(novoLancamento);
-  } catch (error) {
-    res.status(500).json({ erro: "Dados não lançados", mongo: error.message });
-    console.error(error);
+    const Novolancamento = new financeiro(req.body);
+    await Novolancamento.save();
+    res.status(201).json(Novolancamento);
+  } catch (erro) {
+    res.status(500).json({ erro: "Dados não lançados", mongo: erro.message });
+    console.error(erro);
   }
-};
+}
 
 async function deletefinance(req, res) {
   try {
