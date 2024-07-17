@@ -1,6 +1,8 @@
 import { members, generateUniqueId } from '../models/members.js';
 import financeiro from '../models/financeiro.js';
-import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+ 
 
 async function getMembers(req, res) {
   const Newmembers = await members.find();
@@ -60,7 +62,7 @@ async function putMembers(req, res) {
 
 
 
-const uploadData = multer({dest:"download/"});
+
 
 
 async function getfinance(req, res) {
@@ -69,16 +71,24 @@ async function getfinance(req, res) {
 }
 
 async function postfinance(req, res) {
-  console.log(req.body)
   try {
-    const Novolancamento = new financeiro(req.body);
+    const { body, file } = req;
+
+    // Se houver um arquivo de comprovante, adiciona a path do arquivo aos dados do financeiro
+    if (file) {
+      body.comprovante = file.path;
+    }
+
+    const Novolancamento = new financeiro(body);
     await Novolancamento.save();
+
     res.status(201).json(Novolancamento);
   } catch (erro) {
     res.status(500).json({ erro: "Dados não lançados", mongo: erro.message });
     console.error(erro);
   }
 }
+
 
 async function deletefinance(req, res) {
   try {
@@ -102,4 +112,4 @@ async function putfinance(req, res) {
   }
 }
 
-export { uploadData, getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
+export {  getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };

@@ -1,8 +1,10 @@
 import { Router } from "express";
-import {uploadData ,getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
+
+import {getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance,   } from "./controllers/UserController.js";
 import cors from 'cors'
 const routes = Router();
-
+import multer from 'multer';
+const upload = multer({ dest: 'uploads/' });
 routes.get('/membros/ok', getMemberschek);
 routes.get('/membros/:id', getMember);
 routes.get('/membros', getMembers);
@@ -13,7 +15,7 @@ routes.put('/membros/:id', putMembers);
 
 
 routes.get('/finance', getfinance);
-routes.post('/finance',uploadData.single("comprovante"),  cors(), postfinance);
+routes.post('/finance', cors(), upload.single('comprovante'), postfinance);
 routes.delete('/finance/:id', deletefinance);
 routes.put('/finance/:id', putfinance);
 
