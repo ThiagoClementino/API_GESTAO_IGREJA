@@ -10,12 +10,12 @@ const dataRegistro = () => {
   return `${day}/${month}/${year}`;
 };
 
-const comprovanteSchema = new Schema({
-  filename: { type: String, required: true },
-  path: { type: String, required: true },
-  mimetype: { type: String, required: true },
-  size: { type: Number, required: true },
-});
+// const comprovanteSchema = new Schema({
+//   filename: { type: String, required: true },
+//   path: { type: String, required: true },
+//   mimetype: { type: String, required: true },
+//   size: { type: Number, required: true },
+// });
 
 const financeiroSchema = new Schema({
   dataderegistro: {
@@ -44,7 +44,7 @@ const financeiroSchema = new Schema({
     required: true,
   },
   comprovante: {
-    type: comprovanteSchema,
+    type: String,
     required: true,
   },
   observacao: {
