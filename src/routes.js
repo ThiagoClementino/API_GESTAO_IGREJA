@@ -15,7 +15,7 @@ routes.put('/membros/:id', putMembers);
 
 
 routes.get('/finance', getfinance);
-router.post('/', upload.single('comprovante'), postfinance);
+routes.post('/finance', cors(), upload.single('comprovante'), postfinance);
 routes.delete('/finance/:id', deletefinance);
 routes.put('/finance/:id', putfinance);
 
