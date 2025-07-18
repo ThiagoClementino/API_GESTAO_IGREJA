@@ -11,7 +11,7 @@ app.use(routes);
 
 app.get("/", (req, res) => {
   console.log(
-    `Mais informações, leia o README desta aplicação através do link: https://github.com/ThiagoClementino/Api_usuarios.git`
+    `Mais informações, leia o README desta aplicação através do link: https://github.com/ThiagoClementino/API_GESTAO_IGREJA.git`
   );
   res.send("API funcionando corretamente!");
 });
