@@ -10,9 +10,10 @@ app.use(express.json());
 app.use(routes);
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "API funcionando!",
-  });
+  console.log(
+    `Mais informações, leia o README desta aplicação através do link: https://github.com/ThiagoClementino/Api_usuarios.git`
+  );
+  res.send("API funcionando corretamente!");
 });
 
 connectDatabase()
