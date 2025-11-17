@@ -7,7 +7,7 @@ const generateUniqueId = async () => {
   let id;
   let member;
   do {
-    id = Math.floor(1000 + Math.random() * 9000).toString(); // Gera um número de 4 dígitos
+    id = Math.floor(1000 + Math.random() * 9000).toString(); 
     member = await members.findById(id);
   } while (member);
   return id;

@@ -9,6 +9,10 @@ const dataRegistro = () => {
   };
 
 const financeiroSchema = new mongoose.Schema({
+_id: {
+    type: String,
+    default: async () => await generateUniqueId()
+  },
 
 dataderegistro: {
     type: String,
