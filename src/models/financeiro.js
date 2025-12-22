@@ -1,56 +1,58 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+
+// Função para gerar um ID curto e único (ex: FIN-A1B2C3)
+const generateUniqueId = () => {
+  return "FIN-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+};
 
 const dataRegistro = () => {
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Janeiro é 0!
-    const year = now.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 
 const financeiroSchema = new mongoose.Schema({
-_id: {
+  // CORREÇÃO AQUI: Removido o async e definida a função corretamente
+  _id: {
     type: String,
-    default: async () => await generateUniqueId()
+    default: generateUniqueId,
   },
 
-dataderegistro: {
+  dataderegistro: {
     type: String,
     required: false,
     default: dataRegistro,
-},    
-tipodedado:{
+  },
+  tipodedado: {
     type: String,
-    required: true
-},    
-valor: {
-    type:Number,
-    required: true
-},
-statuspagamento: {
-    type:String,
-    required: true
-},
-datapagamento: {
-    type:String,
-    required: true
-},
-tipolancamento: {
+    required: true,
+  },
+  valor: {
+    type: Number,
+    required: true,
+  },
+  statuspagamento: {
     type: String,
-    required: true
-},
-comprovante: {
+    required: true,
+  },
+  datapagamento: {
     type: String,
-    required: false
-},
-observacao: {
-    type:String,
-    required: true
-}
-
-
+    required: true,
+  },
+  tipolancamento: {
+    type: String,
+    required: true,
+  },
+  comprovante: {
+    type: String,
+    required: false,
+  },
+  observacao: {
+    type: String,
+    required: true,
+  },
 });
 
- 
-
-export default mongoose.model('financeiro', financeiroSchema);
+export default mongoose.model("financeiro", financeiroSchema);
