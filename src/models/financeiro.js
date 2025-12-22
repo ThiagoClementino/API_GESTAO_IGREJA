@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 
 // Função para gerar um ID curto e único (ex: FIN-A1B2C3)
 const generateUniqueId = () => {
-  return "FIN-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+  const numerosAleatorios = Math.floor(1000 + Math.random() * 9000);
+  const anoAtual = new Date().getFullYear();
+  return `FIN - ${numerosAleatorios}-${anoAtual}`;
 };
 
 const dataRegistro = () => {
