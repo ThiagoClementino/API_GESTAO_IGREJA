@@ -9,10 +9,13 @@ const generateUniqueId = () => {
 
 const dataRegistro = () => {
   const now = new Date();
-  const day = String(now.getDate()).padStart(2, "0");
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const year = now.getFullYear();
-  return `${day}/${month}/${year}`;
+  // Isso garante o formato DD/MM/AAAA usando o padrão brasileiro
+  return now.toLocaleDateString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 };
 
 const financeiroSchema = new mongoose.Schema({
@@ -21,11 +24,10 @@ const financeiroSchema = new mongoose.Schema({
     type: String,
     default: generateUniqueId,
   },
-
   dataderegistro: {
     type: String,
     required: false,
-    default: dataRegistro,
+    default: dataRegistro, // O Mongoose chamará a função acima no momento do save
   },
   tipodedado: {
     type: String,
