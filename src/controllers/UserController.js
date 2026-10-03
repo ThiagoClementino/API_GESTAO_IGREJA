@@ -120,11 +120,9 @@ async function postMembers(
     );
 
     return res.status(500).json({
-      erro:
-        "Dados não lançados",
-      mongo:
-        erro.message,
-    });
+  erro: "Dados não lançados",
+  mongo: erro.message,
+});
   }
 }
 
@@ -215,10 +213,10 @@ async function getfinance(
   res
 ) {
   try {
-    const lista =
-      await financeiro
-        .find()
-        .lean();
+    // Exclui o documento contador antigo da listagem de lançamentos.
+const lista = await financeiro
+  .find({ _id: { $ne: "financeiros" } })
+  .lean();
 
     return res
       .status(200)
