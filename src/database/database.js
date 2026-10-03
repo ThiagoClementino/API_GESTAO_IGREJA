@@ -10,26 +10,19 @@ async function connectDatabase() {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
-    throw new Error(
-      "Variável MONGO_URI não configurada."
-    );
+    throw new Error("Variável MONGO_URI não configurada.");
   }
 
   if (!connectionPromise) {
+    // Compartilha a tentativa em andamento e libera o cache ao terminar.
     connectionPromise = mongoose
       .connect(mongoUri, {
-        dbName:
-          process.env.MONGO_DB ||
-          "test",
-
-        serverSelectionTimeoutMS:
-          10000,
-
+        dbName: process.env.MONGO_DB || "test",
+        serverSelectionTimeoutMS: 10000,
         maxPoolSize: 10,
       })
-      .catch((erro) => {
+      .finally(() => {
         connectionPromise = null;
-        throw erro;
       });
   }
 
