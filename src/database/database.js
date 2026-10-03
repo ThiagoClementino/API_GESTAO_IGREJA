@@ -1,19 +1,25 @@
 import mongoose from "mongoose";
 
-async function deleteManyDocuments(collection) {
-  const result = await collection.deleteMany({});
-  console.log(
-    `Deleted ${result.deletedCount} documents in the ${collection.collectionName} collection.`
-  );
-}
-
 async function connectDatabase() {
   try {
     await mongoose.connect(
-      "mongodb+srv://thidf57:1HjERWrA67Y0LczT@gerenciador-de-membros.ua4raq8.mongodb.net/?appName=Gerenciador-de-Membros"
+      process.env.MONGO_URI,
+      {
+        dbName: "test",
+      }
+    );
+
+    console.log(
+      "MongoDB conectado com sucesso"
     );
   } catch (err) {
-    console.error(err);
+    console.error(
+      "Erro ao conectar ao MongoDB:",
+      err
+    );
+
+    throw err;
   }
 }
+
 export default connectDatabase;
