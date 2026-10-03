@@ -1,42 +1,145 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 
 import connectDatabase from "./database/database.js";
 import routes from "./routes.js";
 
-const PORT = process.env.PORT || 3060;
+dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+const PORT =
+  process.env.PORT || 3060;
+
+// ==========================================
+// CORS
+// ==========================================
+
+const allowedOrigins = (
+  process.env.CORS_ORIGINS ||
+  "http://localhost:3000"
+)
+  .split(",")
+  .map((origin) =>
+    origin.trim()
+  )
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS",
+    ],
+
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
+  })
+);
+
+// ==========================================
+// JSON
+// ==========================================
+
+app.use(
+  express.json({
+    limit: "1mb",
+  })
+);
+
+// ==========================================
+// HEALTH CHECK API
+// ==========================================
 
 app.get("/", (req, res) => {
-  res.send(
-    "API funcionando corretamente!"
-  );
+  return res.status(200).json({
+    api: "online",
+    mensagem:
+      "API funcionando corretamente!",
+  });
 });
 
-app.use(async (req, res, next) => {
-  try {
-    await connectDatabase();
-    next();
-  } catch (erro) {
-    console.error(
-      "Erro de conexão com MongoDB:",
-      erro
-    );
+// ==========================================
+// HEALTH CHECK DATABASE
+// ==========================================
 
-    return res.status(500).json({
-      erro:
-        "Não foi possível conectar ao banco de dados.",
-    });
+app.get(
+  "/health/db",
+  async (req, res) => {
+    try {
+      await connectDatabase();
+
+      return res.status(200).json({
+        api: "online",
+        database: "conectado",
+      });
+    } catch (erro) {
+      console.error(
+        "Erro MongoDB:",
+        erro
+      );
+
+      return res.status(503).json({
+        api: "online",
+        database:
+          "desconectado",
+      });
+    }
   }
-});
+);
+
+// ==========================================
+// DATABASE MIDDLEWARE
+// ==========================================
+
+app.use(
+  async (req, res, next) => {
+    try {
+      await connectDatabase();
+
+      return next();
+    } catch (erro) {
+      console.error(
+        "Erro de conexão com MongoDB:",
+        erro
+      );
+
+      return res.status(500).json({
+        erro:
+          "Não foi possível conectar ao banco de dados.",
+      });
+    }
+  }
+);
+
+// ==========================================
+// ROTAS
+// ==========================================
 
 app.use(routes);
 
-export default app;
+// ==========================================
+// 404
+// ==========================================
+
+app.use((req, res) => {
+  return res.status(404).json({
+    erro:
+      "Rota não encontrada",
+  });
+});
+
+// ==========================================
+// SERVIDOR LOCAL
+// ==========================================
 
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
@@ -45,3 +148,5 @@ if (!process.env.VERCEL) {
     );
   });
 }
+
+export default app;
