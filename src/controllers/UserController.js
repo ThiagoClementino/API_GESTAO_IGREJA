@@ -287,10 +287,7 @@ async function getfinanceById(
   }
 }
 
-async function postfinance(
-  req,
-  res
-) {
+async function postfinance(req, res) {
   try {
     const {
       _id: ignoredId,
@@ -298,34 +295,35 @@ async function postfinance(
       ...payload
     } = req.body;
 
-    const matricula =
-      await generateMatricula(
-        "financeiros",
-        "FIN"
-      );
+    const matricula = await generateMatricula("financeiros", "FIN");
 
-    const novoLancamento =
-      new financeiro({
+    // Repete apenas colisões do ID aleatório, mantendo a mesma matrícula.
+    for (let tentativa = 0; tentativa < 5; tentativa++) {
+      const novoLancamento = new financeiro({
         ...payload,
         matricula,
       });
 
-    await novoLancamento.save();
+      try {
+        await novoLancamento.save();
 
-    return res
-      .status(201)
-      .json(novoLancamento);
+        return res.status(201).json(novoLancamento);
+      } catch (erro) {
+        const colisaoId =
+          erro.code === 11000 &&
+          erro.keyPattern?._id === 1;
+
+        if (!colisaoId || tentativa === 4) {
+          throw erro;
+        }
+      }
+    }
   } catch (erro) {
-    console.error(
-      "Erro ao cadastrar lançamento:",
-      erro
-    );
+    console.error("Erro ao cadastrar lançamento:", erro);
 
     return res.status(500).json({
-      erro:
-        "Dados não lançados",
-      mongo:
-        erro.message,
+      erro: "Dados não lançados",
+      mongo: erro.message,
     });
   }
 }
