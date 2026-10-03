@@ -81,10 +81,7 @@ async function getMemberschek(
   });
 }
 
-async function postMembers(
-  req,
-  res
-) {
+async function postMembers(req, res) {
   try {
     const {
       _id: ignoredId,
@@ -92,37 +89,38 @@ async function postMembers(
       ...payload
     } = req.body;
 
-    const _id =
-      await generateUniqueId();
+    const matricula = await generateMatricula("members", "MEN");
 
-    const matricula =
-      await generateMatricula(
-        "members",
-        "MEN"
-      );
-
-    const novoMembro =
-      new members({
+    // Regera o ID apenas em colisões, preservando a matrícula.
+    for (let tentativa = 0; tentativa < 5; tentativa++) {
+      const _id = await generateUniqueId();
+      const novoMembro = new members({
         _id,
         ...payload,
         matricula,
       });
 
-    await novoMembro.save();
+      try {
+        await novoMembro.save();
 
-    return res
-      .status(201)
-      .json(novoMembro);
+        return res.status(201).json(novoMembro);
+      } catch (erro) {
+        const colisaoId =
+          erro.code === 11000 &&
+          erro.keyPattern?._id === 1;
+
+        if (!colisaoId || tentativa === 4) {
+          throw erro;
+        }
+      }
+    }
   } catch (erro) {
-    console.error(
-      "Erro ao cadastrar membro:",
-      erro
-    );
+    console.error("Erro ao cadastrar membro:", erro);
 
     return res.status(500).json({
-  erro: "Dados não lançados",
-  mongo: erro.message,
-});
+      erro: "Dados não lançados",
+      mongo: erro.message,
+    });
   }
 }
 
