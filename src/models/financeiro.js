@@ -58,6 +58,10 @@ const financeiroSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  descricao: {
+  type: String,
+  required: false,
+},
   observacao: {
     type: String,
     required: true,

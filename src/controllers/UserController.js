@@ -176,6 +176,34 @@ async function deletefinance(req, res) {
   }
 }
 
+async function getfinanceById(req, res) {
+  try {
+    const lancamento = await financeiro.findById(
+      req.params.id
+    );
+
+    if (!lancamento) {
+      return res.status(404).json({
+        erro: "Lançamento não encontrado",
+      });
+    }
+
+    return res
+      .status(200)
+      .json(lancamento);
+  } catch (erro) {
+    console.error(
+      "Erro ao buscar lançamento:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível buscar o lançamento",
+    });
+  }
+}
+
 async function putfinance(req, res) {
   try {
     const { id } = req.params;
@@ -187,4 +215,4 @@ async function putfinance(req, res) {
   }
 }
 
-export { getMember, getMemberschek, getMembers, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
+export { getMember, getMemberschek, getMembers,   getfinanceById, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };

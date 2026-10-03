@@ -10,6 +10,7 @@ import {
   postfinance,
   deletefinance,
   putfinance,
+  getfinanceById
 } from "./controllers/UserController.js";
 import cors from "cors";
 const routes = Router();
@@ -20,6 +21,7 @@ routes.get("/membros", getMembers);
 routes.post("/membros", cors(), postMembers);
 routes.delete("/membros/:id", deleteMembers);
 routes.put("/membros/:id", putMembers);
+routes.get("/finance/:id", getfinanceById);
 
 routes.get("/finance", getfinance);
 routes.post("/finance", cors(), postfinance);

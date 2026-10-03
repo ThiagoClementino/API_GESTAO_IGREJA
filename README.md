@@ -65,11 +65,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente:
 
     O projeto utiliza uma string de conexão direta no arquivo `src/database/database.js`. Para ambientes de produção, é **altamente recomendável** utilizar variáveis de ambiente para armazenar credenciais sensíveis. Para este projeto, a conexão está definida como:
 
-    ```javascript
-    await mongoose.connect("mongodb+srv://thidf57:1HjERWrA67Y0LczT@gerenciador-de-membros.ua4raq8.mongodb.net/?appName=Gerenciador-de-Membros");
-    ```
-
-    Certifique-se de que esta URL de conexão esteja acessível ou substitua-a pela sua própria URL de conexão do MongoDB Atlas, caso necessário.
+        Certifique-se de que esta URL de conexão esteja acessível ou substitua-a pela sua própria URL de conexão do MongoDB Atlas, caso necessário.
 
 4.  **Execute a aplicação**:
 
