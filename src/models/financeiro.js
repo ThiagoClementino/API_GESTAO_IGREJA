@@ -24,6 +24,11 @@ const financeiroSchema = new mongoose.Schema({
     type: String,
     default: generateUniqueId,
   },
+  matricula: {
+  type: String,
+  required: true,
+  immutable: true,
+},
   dataderegistro: {
     type: String,
     required: false,

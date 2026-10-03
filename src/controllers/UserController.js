@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { members, generateUniqueId } from '../models/members.js';
+import { generateMatricula } from '../models/members.js';
 import financeiro from '../models/financeiro.js';
 
 async function getMembers(req, res) {
@@ -24,14 +25,38 @@ async function getMemberschek(req, res) {
 }
 
 async function postMembers(req, res) {
-  console.log(req.body)
+  console.log(req.body);
+
   try {
-    const _id = await generateUniqueId();
-    const NovoMembro = new members({ _id, ...req.body });
+    const _id =
+      await generateUniqueId();
+
+    const matricula =
+      await generateMatricula(
+        "members",
+        "MEN"
+      );
+
+    const NovoMembro =
+      new members({
+        _id,
+        ...req.body,
+        matricula,
+      });
+
     await NovoMembro.save();
-    res.status(201).json(NovoMembro);
+
+    res
+      .status(201)
+      .json(NovoMembro);
+
   } catch (erro) {
-    res.status(500).json({ erro: "Dados não lançados", mongo: erro.message });
+    res.status(500).json({
+      erro:
+        "Dados não lançados",
+      mongo: erro.message,
+    });
+
     console.error(erro);
   }
 }
@@ -64,13 +89,34 @@ async function getfinance(req, res) {
 }
 
 async function postfinance(req, res) {
-  console.log(req.body)
+  console.log(req.body);
+
   try {
-    const Novolancamento = new financeiro(req.body);
+    const matricula =
+      await generateMatricula(
+        "financeiros",
+        "FIN"
+      );
+
+    const Novolancamento =
+      new financeiro({
+        ...req.body,
+        matricula,
+      });
+
     await Novolancamento.save();
-    res.status(201).json(Novolancamento);
+
+    res
+      .status(201)
+      .json(Novolancamento);
+
   } catch (erro) {
-    res.status(500).json({ erro: "Dados não lançados", mongo: erro.message });
+    res.status(500).json({
+      erro:
+        "Dados não lançados",
+      mongo: erro.message,
+    });
+
     console.error(erro);
   }
 }

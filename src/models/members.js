@@ -22,10 +22,16 @@ const getCurrentDateFormatted = () => {
 };
 
 const membersSchema = new Schema({
- _id: {
-    type: String,
-    default: async () => await generateUniqueId()
-  },
+_id: {
+  type: String,
+  default: async () =>
+    await generateUniqueId()
+},
+matricula: {
+  type: String,
+  required: true,
+  immutable: true,
+},
 
   datacriacao: {
     type: String,
