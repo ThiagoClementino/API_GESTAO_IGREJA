@@ -4,13 +4,20 @@ const Schema = mongoose.Schema;
 
 // Função para gerar um ID único de 4 dígitos
 const generateUniqueId = async () => {
-  let id;
-  let member;
-  do {
-    id = Math.floor(1000 + Math.random() * 9000).toString(); 
-    member = await members.findById(id);
-  } while (member);
-  return id;
+  const quantidadeIds = 9000;
+  const inicio = Math.floor(Math.random() * quantidadeIds);
+
+  // Percorre cada ID no máximo uma vez, começando em uma posição aleatória.
+  for (let tentativa = 0; tentativa < quantidadeIds; tentativa++) {
+    const id = String(1000 + ((inicio + tentativa) % quantidadeIds));
+    const member = await members.findById(id);
+
+    if (!member) {
+      return id;
+    }
+  }
+
+  throw new Error("Não há IDs de membros disponíveis entre 1000 e 9999.");
 };
 
 const getCurrentDateFormatted = () => {
