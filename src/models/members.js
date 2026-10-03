@@ -52,10 +52,10 @@ matricula: {
     type: String,
     required: false,
   },
-  dateBirth: {
-    type: Date,
-    required: false,
-  },
+ dateBirth: {
+  type: String,
+  required: false,
+},
   sex: {
     type: String,
     required: false,
