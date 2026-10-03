@@ -11,10 +11,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/*
- * Conecta ao MongoDB antes de processar
- * as rotas que dependem do banco.
- */
+app.get("/", (req, res) => {
+  res.send(
+    "API funcionando corretamente!"
+  );
+});
+
 app.use(async (req, res, next) => {
   try {
     await connectDatabase();
@@ -34,22 +36,8 @@ app.use(async (req, res, next) => {
 
 app.use(routes);
 
-app.get("/", (req, res) => {
-  res.send(
-    "API funcionando corretamente!"
-  );
-});
-
-/*
- * Vercel utiliza o Express exportado
- * como handler da aplicação.
- */
 export default app;
 
-/*
- * Servidor local.
- * Na Vercel este trecho não é executado.
- */
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(
