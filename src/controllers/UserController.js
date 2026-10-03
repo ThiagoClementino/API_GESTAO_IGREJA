@@ -78,18 +78,36 @@ async function deletefinance(req, res) {
   try {
     const { id } = req.params;
 
-    const lancamentoExcluido =
-      await financeiro.findByIdAndDelete(id);
+    // Primeiro tenta excluir registros novos,
+    // cujo _id é String.
+    let resultado =
+      await financeiro.deleteOne({
+        _id: id,
+      });
 
-    if (!lancamentoExcluido) {
+    // Se não encontrou e o ID recebido
+    // possui formato de ObjectId,
+    // tenta excluir registros antigos.
+    if (
+      resultado.deletedCount === 0 &&
+      mongoose.Types.ObjectId.isValid(id)
+    ) {
+      resultado =
+        await financeiro.collection.deleteOne({
+          _id: new mongoose.Types.ObjectId(id),
+        });
+    }
+
+    if (resultado.deletedCount === 0) {
       return res.status(404).json({
         erro: "Lançamento não encontrado",
       });
     }
 
-    return res
-      .status(200)
-      .send("Lançamento deletado");
+    return res.status(200).json({
+      mensagem:
+        "Lançamento deletado com sucesso",
+    });
   } catch (erro) {
     console.error(
       "Erro ao excluir lançamento:",
