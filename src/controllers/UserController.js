@@ -77,11 +77,29 @@ async function postfinance(req, res) {
 async function deletefinance(req, res) {
   try {
     const { id } = req.params;
-    await financeiro.findByIdAndDelete(id);
-    res.status(200).send("Lançamento deletado");
+
+    const lancamentoExcluido =
+      await financeiro.findByIdAndDelete(id);
+
+    if (!lancamentoExcluido) {
+      return res.status(404).json({
+        erro: "Lançamento não encontrado",
+      });
+    }
+
+    return res
+      .status(200)
+      .send("Lançamento deletado");
   } catch (erro) {
-    res.status(500).json({ erro: "Não foi possível excluir os dados" });
-    console.log(erro);
+    console.error(
+      "Erro ao excluir lançamento:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível excluir os dados",
+    });
   }
 }
 
