@@ -1,27 +1,59 @@
 import express from "express";
+import cors from "cors";
+
 import connectDatabase from "./database/database.js";
 import routes from "./routes.js";
-import cors from "cors";
-const PORT = 3060;
+
+const PORT = process.env.PORT || 3060;
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
+
+/*
+ * Conecta ao MongoDB antes de processar
+ * as rotas que dependem do banco.
+ */
+app.use(async (req, res, next) => {
+  try {
+    await connectDatabase();
+    next();
+  } catch (erro) {
+    console.error(
+      "Erro de conexão com MongoDB:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível conectar ao banco de dados.",
+    });
+  }
+});
+
 app.use(routes);
 
 app.get("/", (req, res) => {
-  console.log(
-    `Mais informações, leia o README desta aplicação através do link: https://github.com/ThiagoClementino/API_GESTAO_IGREJA.git`
+  res.send(
+    "API funcionando corretamente!"
   );
-  res.send("API funcionando corretamente!");
 });
 
-connectDatabase()
-  .then(() => {
-    app.listen(PORT, () =>
-      console.log(
-        `Servidor e Banco de dados rodando no endereço: http://localhost:${PORT}`
-      )
+/*
+ * Vercel utiliza o Express exportado
+ * como handler da aplicação.
+ */
+export default app;
+
+/*
+ * Servidor local.
+ * Na Vercel este trecho não é executado.
+ */
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(
+      `Servidor rodando em http://localhost:${PORT}`
     );
-  })
-  .catch((erro) => console.log("Banco de dados não conectado"));
+  });
+}
