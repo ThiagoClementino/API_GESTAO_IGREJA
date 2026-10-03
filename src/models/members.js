@@ -31,6 +31,8 @@ matricula: {
   type: String,
   required: true,
   immutable: true,
+  unique: true,
+  index: true,
 },
 
   datacriacao: {
@@ -51,7 +53,7 @@ matricula: {
     required: false,
   },
   dateBirth: {
-    type: String,
+    type: Date,
     required: false,
   },
   sex: {

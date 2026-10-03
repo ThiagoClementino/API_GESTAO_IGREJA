@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import {
   getMember,
   getMemberschek,
@@ -6,26 +7,77 @@ import {
   postMembers,
   deleteMembers,
   putMembers,
+
   getfinance,
+  getfinanceById,
   postfinance,
   deletefinance,
   putfinance,
-  getfinanceById
 } from "./controllers/UserController.js";
-import cors from "cors";
+
 const routes = Router();
 
-routes.get("/membros/ok", getMemberschek);
-routes.get("/membros/:id", getMember);
-routes.get("/membros", getMembers);
-routes.post("/membros", cors(), postMembers);
-routes.delete("/membros/:id", deleteMembers);
-routes.put("/membros/:id", putMembers);
-routes.get("/finance/:id", getfinanceById);
+// ==========================================
+// MEMBROS
+// ==========================================
 
-routes.get("/finance", getfinance);
-routes.post("/finance", cors(), postfinance);
-routes.delete("/finance/:id", deletefinance);
-routes.put("/finance/:id", putfinance);
+routes.get(
+  "/membros/ok",
+  getMemberschek
+);
+
+routes.get(
+  "/membros",
+  getMembers
+);
+
+routes.get(
+  "/membros/:id",
+  getMember
+);
+
+routes.post(
+  "/membros",
+  postMembers
+);
+
+routes.put(
+  "/membros/:id",
+  putMembers
+);
+
+routes.delete(
+  "/membros/:id",
+  deleteMembers
+);
+
+// ==========================================
+// FINANCEIRO
+// ==========================================
+
+routes.get(
+  "/finance",
+  getfinance
+);
+
+routes.get(
+  "/finance/:id",
+  getfinanceById
+);
+
+routes.post(
+  "/finance",
+  postfinance
+);
+
+routes.put(
+  "/finance/:id",
+  putfinance
+);
+
+routes.delete(
+  "/finance/:id",
+  deletefinance
+);
 
 export default routes;

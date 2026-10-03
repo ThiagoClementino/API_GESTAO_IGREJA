@@ -11,31 +11,87 @@ import {
   generateMatricula,
 } from "../models/counter.js";
 
-async function getMembers(req, res) {
-  const Newmembers = await members.find();
-  return res.status(200).json(Newmembers);
-}
-async function getMember(req, res) {
+// ==========================================
+// MEMBROS
+// ==========================================
+
+async function getMembers(
+  req,
+  res
+) {
   try {
-      const member = await members.findOne({ _id: req.params.id });
-      if (member) {
-          res.status(200).json(member);
-      } else {
-          res.status(404).json({ message: 'Membro não encontrado' });
-      }
-  } catch (error) {
-      res.status(500).json({ message: 'Erro ao buscar membro', error });
+    const lista =
+      await members.find().lean();
+
+    return res
+      .status(200)
+      .json(lista);
+  } catch (erro) {
+    console.error(
+      "Erro ao buscar membros:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível buscar os membros",
+    });
   }
 }
 
-async function getMemberschek(req, res) {
-  return res.status(200).json("Api ok");
+async function getMember(
+  req,
+  res
+) {
+  try {
+    const member =
+      await members.findOne({
+        _id: req.params.id,
+      });
+
+    if (!member) {
+      return res.status(404).json({
+        erro:
+          "Membro não encontrado",
+      });
+    }
+
+    return res
+      .status(200)
+      .json(member);
+  } catch (erro) {
+    console.error(
+      "Erro ao buscar membro:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Erro ao buscar membro",
+    });
+  }
 }
 
-async function postMembers(req, res) {
-  console.log(req.body);
+async function getMemberschek(
+  req,
+  res
+) {
+  return res.status(200).json({
+    mensagem: "API ok",
+  });
+}
 
+async function postMembers(
+  req,
+  res
+) {
   try {
+    const {
+      _id: ignoredId,
+      matricula: ignoredMatricula,
+      ...payload
+    } = req.body;
+
     const _id =
       await generateUniqueId();
 
@@ -45,117 +101,355 @@ async function postMembers(req, res) {
         "MEN"
       );
 
-    const NovoMembro =
+    const novoMembro =
       new members({
         _id,
-        ...req.body,
+        ...payload,
         matricula,
       });
 
-    await NovoMembro.save();
+    await novoMembro.save();
 
-    res
+    return res
       .status(201)
-      .json(NovoMembro);
-
+      .json(novoMembro);
   } catch (erro) {
-    res.status(500).json({
+    console.error(
+      "Erro ao cadastrar membro:",
+      erro
+    );
+
+    return res.status(500).json({
       erro:
         "Dados não lançados",
-      mongo: erro.message,
+      mongo:
+        erro.message,
     });
-
-    console.error(erro);
   }
 }
 
-async function deleteMembers(req, res) {
+async function putMembers(
+  req,
+  res
+) {
   try {
-    const { id } = req.params;
-    await members.findByIdAndDelete(id);
-    res.status(200).send("Membro deletado");
+    const {
+      _id,
+      matricula,
+      ...payload
+    } = req.body;
+
+    const membro =
+      await members.findByIdAndUpdate(
+        req.params.id,
+        payload,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+    if (!membro) {
+      return res.status(404).json({
+        erro:
+          "Membro não encontrado",
+      });
+    }
+
+    return res
+      .status(200)
+      .json(membro);
   } catch (erro) {
-    res.status(500).json({ erro: "Não foi possível excluir os dados" });
-    console.log(erro);
+    console.error(
+      "Erro ao atualizar membro:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível atualizar os dados",
+    });
   }
 }
 
-async function putMembers(req, res) {
+async function deleteMembers(
+  req,
+  res
+) {
   try {
-    const { id } = req.params;
-    await members.findByIdAndUpdate(id, req.body);
-    res.send("Dados atualizados");
+    const membro =
+      await members.findByIdAndDelete(
+        req.params.id
+      );
+
+    if (!membro) {
+      return res.status(404).json({
+        erro:
+          "Membro não encontrado",
+      });
+    }
+
+    return res.status(200).json({
+      mensagem:
+        "Membro deletado com sucesso",
+    });
   } catch (erro) {
-    res.status(500).json({ erro: "Não foi possível atualizar os dados" });
-    console.log(erro);
+    console.error(
+      "Erro ao excluir membro:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível excluir os dados",
+    });
   }
 }
 
-async function getfinance(req, res) {
-  const NewLancamento = await financeiro.find();
-  return res.status(200).json(NewLancamento);
+// ==========================================
+// FINANCEIRO
+// ==========================================
+
+async function getfinance(
+  req,
+  res
+) {
+  try {
+    const lista =
+      await financeiro
+        .find()
+        .lean();
+
+    return res
+      .status(200)
+      .json(lista);
+  } catch (erro) {
+    console.error(
+      "Erro ao buscar lançamentos:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível buscar os lançamentos",
+    });
+  }
 }
 
-async function postfinance(req, res) {
-  console.log(req.body);
-
+async function getfinanceById(
+  req,
+  res
+) {
   try {
+    const { id } =
+      req.params;
+
+    let lancamento =
+      await financeiro
+        .findById(id)
+        .lean();
+
+    if (
+      !lancamento &&
+      mongoose.Types.ObjectId
+        .isValid(id)
+    ) {
+      lancamento =
+        await financeiro
+          .collection
+          .findOne({
+            _id:
+              new mongoose
+                .Types.ObjectId(
+                  id
+                ),
+          });
+    }
+
+    if (!lancamento) {
+      return res.status(404).json({
+        erro:
+          "Lançamento não encontrado",
+      });
+    }
+
+    return res
+      .status(200)
+      .json(lancamento);
+  } catch (erro) {
+    console.error(
+      "Erro ao buscar lançamento:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível buscar o lançamento",
+    });
+  }
+}
+
+async function postfinance(
+  req,
+  res
+) {
+  try {
+    const {
+      _id: ignoredId,
+      matricula: ignoredMatricula,
+      ...payload
+    } = req.body;
+
     const matricula =
       await generateMatricula(
         "financeiros",
         "FIN"
       );
 
-    const Novolancamento =
+    const novoLancamento =
       new financeiro({
-        ...req.body,
+        ...payload,
         matricula,
       });
 
-    await Novolancamento.save();
+    await novoLancamento.save();
 
-    res
+    return res
       .status(201)
-      .json(Novolancamento);
-
+      .json(novoLancamento);
   } catch (erro) {
-    res.status(500).json({
+    console.error(
+      "Erro ao cadastrar lançamento:",
+      erro
+    );
+
+    return res.status(500).json({
       erro:
         "Dados não lançados",
-      mongo: erro.message,
+      mongo:
+        erro.message,
     });
-
-    console.error(erro);
   }
 }
 
-async function deletefinance(req, res) {
+async function putfinance(
+  req,
+  res
+) {
   try {
-    const { id } = req.params;
+    const { id } =
+      req.params;
 
-    // Primeiro tenta excluir registros novos,
-    // cujo _id é String.
+    const {
+      _id,
+      matricula,
+      ...payload
+    } = req.body;
+
+    let lancamento =
+      await financeiro
+        .findByIdAndUpdate(
+          id,
+          payload,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+
+    if (
+      !lancamento &&
+      mongoose.Types.ObjectId
+        .isValid(id)
+    ) {
+      const objectId =
+        new mongoose.Types.ObjectId(
+          id
+        );
+
+      const resultado =
+        await financeiro
+          .collection
+          .updateOne(
+            {
+              _id: objectId,
+            },
+            {
+              $set: payload,
+            }
+          );
+
+      if (
+        resultado.matchedCount >
+        0
+      ) {
+        lancamento =
+          await financeiro
+            .collection
+            .findOne({
+              _id: objectId,
+            });
+      }
+    }
+
+    if (!lancamento) {
+      return res.status(404).json({
+        erro:
+          "Lançamento não encontrado",
+      });
+    }
+
+    return res
+      .status(200)
+      .json(lancamento);
+  } catch (erro) {
+    console.error(
+      "Erro ao atualizar lançamento:",
+      erro
+    );
+
+    return res.status(500).json({
+      erro:
+        "Não foi possível atualizar os dados",
+    });
+  }
+}
+
+async function deletefinance(
+  req,
+  res
+) {
+  try {
+    const { id } =
+      req.params;
+
     let resultado =
       await financeiro.deleteOne({
         _id: id,
       });
 
-    // Se não encontrou e o ID recebido
-    // possui formato de ObjectId,
-    // tenta excluir registros antigos.
     if (
       resultado.deletedCount === 0 &&
-      mongoose.Types.ObjectId.isValid(id)
+      mongoose.Types.ObjectId
+        .isValid(id)
     ) {
       resultado =
-        await financeiro.collection.deleteOne({
-          _id: new mongoose.Types.ObjectId(id),
-        });
+        await financeiro
+          .collection
+          .deleteOne({
+            _id:
+              new mongoose
+                .Types.ObjectId(id),
+          });
     }
 
-    if (resultado.deletedCount === 0) {
+    if (
+      resultado.deletedCount ===
+      0
+    ) {
       return res.status(404).json({
-        erro: "Lançamento não encontrado",
+        erro:
+          "Lançamento não encontrado",
       });
     }
 
@@ -176,43 +470,17 @@ async function deletefinance(req, res) {
   }
 }
 
-async function getfinanceById(req, res) {
-  try {
-    const lancamento = await financeiro.findById(
-      req.params.id
-    );
+export {
+  getMember,
+  getMemberschek,
+  getMembers,
+  postMembers,
+  deleteMembers,
+  putMembers,
 
-    if (!lancamento) {
-      return res.status(404).json({
-        erro: "Lançamento não encontrado",
-      });
-    }
-
-    return res
-      .status(200)
-      .json(lancamento);
-  } catch (erro) {
-    console.error(
-      "Erro ao buscar lançamento:",
-      erro
-    );
-
-    return res.status(500).json({
-      erro:
-        "Não foi possível buscar o lançamento",
-    });
-  }
-}
-
-async function putfinance(req, res) {
-  try {
-    const { id } = req.params;
-    await financeiro.findByIdAndUpdate(id, req.body);
-    res.send("Dados atualizados");
-  } catch (erro) {
-    res.status(500).json({ erro: "Não foi possível atualizar os dados" });
-    console.log(erro);
-  }
-}
-
-export { getMember, getMemberschek, getMembers,   getfinanceById, postMembers, deleteMembers, putMembers, getfinance, postfinance, deletefinance, putfinance };
+  getfinance,
+  getfinanceById,
+  postfinance,
+  deletefinance,
+  putfinance,
+};

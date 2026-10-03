@@ -28,6 +28,8 @@ const financeiroSchema = new mongoose.Schema({
   type: String,
   required: true,
   immutable: true,
+  unique: true,
+  index: true,
 },
   dataderegistro: {
     type: String,
