@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
-import { members, generateUniqueId } from '../models/members.js';
-import { generateMatricula } from '../models/members.js';
-import financeiro from '../models/financeiro.js';
+
+import {
+  members,
+  generateUniqueId,
+} from "../models/members.js";
+
+import financeiro from "../models/financeiro.js";
+
+import {
+  generateMatricula,
+} from "../models/counter.js";
 
 async function getMembers(req, res) {
   const Newmembers = await members.find();
