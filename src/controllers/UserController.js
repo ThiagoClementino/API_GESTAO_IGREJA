@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { members, generateUniqueId } from '../models/members.js';
 import financeiro from '../models/financeiro.js';
 
